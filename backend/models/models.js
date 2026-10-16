@@ -11,6 +11,7 @@ const User = sequelize.define('user', {
 
 const Organization = sequelize.define('organization', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    name: { type: DataTypes.STRING },
     email: { type: DataTypes.STRING, unique: true },
     phone: { type: DataTypes.STRING, unique: true },
     cover_img: { type: DataTypes.TEXT, allowNull: false },
@@ -20,7 +21,7 @@ const Organization = sequelize.define('organization', {
 
 const Membership = sequelize.define('membership', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    role: { type: DataTypes.STRING, defaultValue: 'member' }, //может быть moderator, event_manager, leader
+    role: { type: DataTypes.STRING, defaultValue: 'member' }, //может быть member, moderator, event_manager, leader
 });
 
 const Application = sequelize.define('application', {
