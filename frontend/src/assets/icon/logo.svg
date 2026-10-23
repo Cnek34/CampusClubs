@@ -1,0 +1,23 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 64" fill="none">
+  <defs>
+    <linearGradient id="cc-purple" x1="8" y1="8" x2="52" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CF6"></stop>
+      <stop offset="1" stop-color="#5B45D6"></stop>
+    </linearGradient>
+  </defs>
+
+  <!-- Icon -->
+  <rect width="64" height="64" rx="17" fill="#171E42"></rect>
+  <path d="M45 29A17 17 0 1 0 45 42" stroke="url(#cc-purple)" stroke-width="9" stroke-linecap="round"></path>
+
+  <!-- Graduation cap -->
+  <path d="M15 18L32 10L49 18L32 26L15 18Z" fill="#FFFFFF"></path>
+  <path d="M43 21V29" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"></path>
+  <circle cx="43" cy="31" r="2" fill="#A78BFA"></circle>
+
+  <!-- Wordmark -->
+  <text x="76" y="29" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="800" letter-spacing="-0.8" fill="#171E42">Campus</text>
+
+  <text x="76" y="53" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="800" letter-spacing="-0.8" fill="#6D55E8">Clubs</text>
+</svg>
