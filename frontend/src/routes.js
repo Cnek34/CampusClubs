@@ -2,19 +2,14 @@ import {
     LOGIN_ROUTE, 
     REGISTRATION_ROUTE,
     ORGANIZATION_ROUTE,
-    ORGANIZATION_CATALOG_ROUTE,
-    PROFILE_ROUTE
+    ORGANIZATION_CATALOG_ROUTE
 } from "@utils/router-path";
 import Auth from "@pages/Auth";
 import Organization from "@pages/Organization";
 import OrganizationCatalog from "@pages/OrganizationCatalog";
-import Profile from "@pages/Profile"
 
 export const authRoutes = [
-    {
-        path: PROFILE_ROUTE,
-        Component: Profile
-    }
+    
 ];
 
 export const publicRoutes = [

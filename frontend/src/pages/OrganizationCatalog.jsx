@@ -1,13 +1,9 @@
 import Card from "@components/Card";
 import { ORGANIZATION_ROUTE } from "@utils/router-path";
-import { useQuery } from "@tanstack/react-query";
-import { getAllOrganization } from '@services/api/api';
+import { useOrganizationsQuery } from "@hooks/organizations/organizationsQuery"
 
 const OrganizationCatalog = () => {
-    const { data: organizations, isLoading } = useQuery({
-        queryKey: ['organizations'],
-        queryFn: () => getAllOrganization(),
-    });
+    const { data: organizations, isLoading } = useOrganizationsQuery();
 
     return (
         <div className="mt-8 flex flex-col gap-4">

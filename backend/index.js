@@ -22,7 +22,7 @@ app.use(errorHandler);
 const start = async () => {
     try {
         await sequelize.authenticate();
-        await sequelize.sync();
+        await sequelize.sync({ alter: true });
         app.listen(PORT, () => console.log(PORT));
     } catch (e) {
         console.log(e);
