@@ -1,7 +1,10 @@
-import { useParams } from 'react-router-dom';
-import { useQuery } from "@tanstack/react-query";
-import { getOneOrganization, getAllMembershipsOrganization } from '@services/api/api';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useOrganizationQuery } from "@hooks/organizations/organizationsQuery";
+import { useApplicationQuery } from "@hooks/memberships/membershipsQuery";
 import { URL } from '@services/api/index';
+import { useUser } from '@services/context/UserContext';
+import { APPLICATION_FORM_ROUTE, LOGIN_ROUTE } from "@utils/router-path"
+import { useMemo } from 'react';
 
 const ROLE_NAMES = {
   leader: 'Руководитель',
@@ -18,34 +21,49 @@ const ROLE_WEIGHT = {
 };
 
 const Organization = () => {
+  const { isAuth, user } = useUser();
   const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const { data: organization, isLoading } = useQuery({
-    queryKey: ['organization', id],
-    queryFn: () => getOneOrganization(id)
-  });
+  const { data: organization } = useOrganizationQuery(id);
+  const { data: membershipsData, isLoading: isMembershipsLoading } = useApplicationQuery(id);
 
-  const { data: memberships, isLoading: isMembershipsLoading } = useQuery({
-    queryKey: ['organization-memberships', id],
-    queryFn: () => getAllMembershipsOrganization(id),
-    enabled: Boolean(id),
-    select: (data) => {
-      const mgmtRoles = ['leader', 'moderator', 'event_manager'];
+  const memberships = useMemo(() => {
+    if (!membershipsData) return [];
 
-      const management = data
-        .filter(m => mgmtRoles.includes(m.role))
-        .sort((a, b) => {
-          const weightA = ROLE_WEIGHT[a.role] || 99;
-          const weightB = ROLE_WEIGHT[b.role] || 99;
-          if (weightA !== weightB) {
-            return weightA - weightB;
-          }
-          return a.user.full_name.localeCompare(b.user.full_name);
+    const mgmtRoles = ['leader', 'moderator', 'event_manager'];
+
+    return membershipsData
+      .filter((m) => mgmtRoles.includes(m.role))
+      .sort((a, b) => {
+        const weightA = ROLE_WEIGHT[a.role] ?? 99;
+        const weightB = ROLE_WEIGHT[b.role] ?? 99;
+        if (weightA !== weightB) return weightA - weightB;
+        return a.user.full_name.localeCompare(b.user.full_name);
+      });
+  }, [membershipsData]);
+
+  const isMember = useMemo(() => {
+    if (!user?.id || !membershipsData) return false;
+    return membershipsData.some(
+      (m) => (m.user?.id ?? m.user_id) === user.id
+    );
+  }, [membershipsData, user?.id]);
+
+  const handleOpenClick = (id) => {
+      if (isAuth) {
+        console.log(`${APPLICATION_FORM_ROUTE}/${id}`)
+        console.log(location)
+        navigate(`${APPLICATION_FORM_ROUTE}/${id}`, {
+          state: {
+              background: location,
+          },
         });
-        
-      return management;
-    }
-  });
+      } else {
+        navigate(LOGIN_ROUTE)
+      }
+    };
 
   if (!organization) {
     return null;
@@ -73,7 +91,7 @@ const Organization = () => {
                 </div>
             </div>
             
-            <button className="btn btn-primary w-full md:w-auto">
+            <button className={`btn btn-primary w-full md:w-auto ${isMember && "btn-disabled"}`} onClick={() => handleOpenClick(organization.id)}>
               Подать заявку
             </button>
           </div>
@@ -122,7 +140,7 @@ const Organization = () => {
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-base-content/60 text-center py-4">Пока нет участников</p>
+            <p className="text-sm text-base-content/60 text-center py-4">Пока нет руководителей</p>
           )}
         </div>
       </div>

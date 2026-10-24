@@ -29,7 +29,8 @@ const Application = sequelize.define('application', {
     resume_url: { type: DataTypes.TEXT },
     motivation: { type: DataTypes.TEXT },
     comment: { type: DataTypes.TEXT },
-    interview_at: { type: DataTypes.DATE }
+    interview_at: { type: DataTypes.DATE },
+    status: { type: DataTypes.STRING, defaultValue: 'consideration' } //может быть consideration, interview, approve, rejection
 });
 
 const Announcement = sequelize.define('announcement', {

@@ -4,9 +4,9 @@ const ApiError = require('../error/ApiError');
 class ApplicationController {
     async create(req, res, next) {
         try {
-            const { userId, organizationId, motivation, resumeUrl } = req.body;
+            const { userId, organizationId, motivation, resume_url } = req.body;
 
-            const application = await Application.create({ userId, organizationId, motivation, resume_url: resumeUrl });
+            const application = await Application.create({ userId, organizationId, motivation, resume_url });
             return res.json(application);
 
         } catch (e) {
@@ -31,7 +31,7 @@ class ApplicationController {
                 where.userId = userId;
                 include.push({
                     model: Organization,
-                    attributes: ['id', 'email', 'category', 'cover_img']
+                    attributes: ['id','name', 'email', 'category', 'cover_img']
                 });
             }
 
